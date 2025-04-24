@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Link</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+</head>
+<body>
+    <p><b>Note: To open ABC browser in a new tab, right-click the link and select 'Open link in new tab' </b></p>
+    For more details, visit the page:<a href="https://orgfarm-d2a978b716-dev-ed.develop.my.site.com/onemoretry" target="_blank">AgentForce</a>
+	
+
+<script type='text/javascript'>
+	function initEmbeddedMessaging() {
+		try {
+			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+
+			embeddedservice_bootstrap.init(
+				'00DgL000000X5XB',
+				'ESA_Web_Deployment',
+				'https://orgfarm-d2a978b716-dev-ed.develop.my.site.com/ESWESAWebDeployment1744037404517',
+				{
+					scrt2URL: 'https://orgfarm-d2a978b716-dev-ed.develop.my.salesforce-scrt.com'
+				}
+			);
+		} catch (err) {
+			console.error('Error loading Embedded Messaging: ', err);
+		}
+	};
+</script>
+<script type='text/javascript' src='https://orgfarm-d2a978b716-dev-ed.develop.my.site.com/ESWESAWebDeployment1744037404517/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
+
+
+
+</body>
+</html>
