@@ -1,55 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Start Chat on Button Click</title>
+    <title>Agent Service Chat Example</title>
 </head>
 <body>
-    <button id="start-chat-button" disabled>Start Chat</button> <!-- Disable button initially -->
+    <div id="chat-container"></div> <!-- Container for the chat widget -->
 
     <script type='text/javascript'>
-        let embeddedSvcLoaded = false;
-
-        // Callback function after the script is loaded
-        function onEmbeddedSvcLoaded() {
-            embeddedSvcLoaded = true;
-            initESW('https://orgfarm-5b184b8ce8-dev-ed.develop.my.site.com');
-            document.getElementById("start-chat-button").disabled = false; // Enable button after initialization
-        }
-
-        // Initialize Embedded Service
-        var initESW = function(gslbBaseURL) {
-            embedded_svc.settings.displayHelpButton = false; // Hide the default help button
-            embedded_svc.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
-            embedded_svc.init(
-                '00DdL00000N7Glz',
-                'ESA_Web_Deployment',
-                gslbBaseURL,
-                'https://orgfarm-5b184b8ce8-dev-ed.develop.my.salesforce-scrt.com'
-            );
-        };
-
-        // Start Chat Function
-        function startChat() {
-            if (!embeddedSvcLoaded) {
-                console.error('Embedded Service is not yet loaded.');
-                return;
+        function initEmbeddedMessaging() {
+            try {
+                embeddedservice_bootstrap.settings.language = 'en_US'; // Set language
+                embeddedservice_bootstrap.init(
+                    '00DdL00000N7Glz', // Your org ID
+                    'ESA_Web_Deployment', // Your deployment name
+                    'https://orgfarm-5b184b8ce8-dev-ed.develop.my.site.com/ESWESAWebDeployment1724800920657', // Embedded Service URL
+                    {
+                        scrt2URL: 'https://orgfarm-5b184b8ce8-dev-ed.develop.my.salesforce-scrt.com' // SCRT URL
+                    }
+                );
+                embeddedservice_bootstrap.settings.targetElement = document.getElementById("chat-container"); // Target element
+                embeddedservice_bootstrap.initMessaging(); // Initialize messaging
+            } catch (err) {
+                console.error('Error loading Embedded Messaging: ', err);
             }
-            console.log('Inside Start Chat');
-            embedded_svc.liveAgentAPI.startChat({
-                directToAgentRouting: {
-                    buttonId: "5735f000000Tm6g",
-                    fallback: true
-                },
-                extraPrechatInfo: [],
-                extraPrechatFormDetails: []
-            });
-        }
-
-        // Add click event listener after the script is loaded
-        document.getElementById("start-chat-button").addEventListener("click", startChat);
+        };
     </script>
-
-    <!-- Load the Embedded Service script and call the callback function -->
-    <script type='text/javascript' src='https://orgfarm-5b184b8ce8-dev-ed.develop.my.site.com/ESWESAWebDeployment1724800920657/assets/js/bootstrap.min.js' onload='onEmbeddedSvcLoaded()'></script>
+    <script type='text/javascript' src='https://orgfarm-5b184b8ce8-dev-ed.develop.my.site.com/ESWESAWebDeployment1724800920657/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
 </body>
 </html>
