@@ -2,12 +2,23 @@
 <html>
 <head>
     <title>Start Chat on Button Click</title>
-    <script type='text/javascript' src='https://orgfarm-5b184b8ce8-dev-ed.develop.my.site.com/ESWESAWebDeployment1724800920657/assets/js/bootstrap.min.js'></script>
 </head>
 <body>
-    <button onclick="startChat()">Start Chat</button>
+    <button id="start-chat-button">Start Chat</button>
 
     <script type='text/javascript'>
+        // Function to load a script dynamically and return a Promise
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.body.appendChild(script);
+            });
+        }
+
+        // Initialize Embedded Service
         var initESW = function(gslbBaseURL) {
             embedded_svc.settings.displayHelpButton = false; // Hide the default help button
             embedded_svc.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
@@ -19,6 +30,7 @@
             );
         };
 
+        // Start Chat Function
         function startChat() {
             console.log('Inside Start Chat');
             embedded_svc.liveAgentAPI.startChat({
@@ -30,6 +42,23 @@
                 extraPrechatFormDetails: []
             });
         }
+
+        // Async function to initialize Embedded Service
+        async function initializeEmbeddedService() {
+            try {
+                await loadScript('https://orgfarm-5b184b8ce8-dev-ed.develop.my.site.com/ESWESAWebDeployment1724800920657/assets/js/bootstrap.min.js');
+                initESW('https://orgfarm-5b184b8ce8-dev-ed.develop.my.site.com');
+                console.log('Embedded Service loaded successfully.');
+
+                // Add click event listener after initialization
+                document.getElementById("start-chat-button").addEventListener("click", startChat);
+            } catch (error) {
+                console.error('Failed to load Embedded Service:', error);
+            }
+        }
+
+        // Start initialization
+        initializeEmbeddedService();
     </script>
 </body>
 </html>
