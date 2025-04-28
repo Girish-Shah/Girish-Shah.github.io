@@ -4,18 +4,16 @@
     <title>Start Chat on Button Click</title>
 </head>
 <body>
-    <button id="start-chat-button">Start Chat</button>
+    <button id="start-chat-button" disabled>Start Chat</button> <!-- Disable button initially -->
 
     <script type='text/javascript'>
-        // Function to load a script dynamically and return a Promise
-        function loadScript(src) {
-            return new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.src = src;
-                script.onload = resolve;
-                script.onerror = reject;
-                document.body.appendChild(script);
-            });
+        let embeddedSvcLoaded = false;
+
+        // Callback function after the script is loaded
+        function onEmbeddedSvcLoaded() {
+            embeddedSvcLoaded = true;
+            initESW('https://orgfarm-5b184b8ce8-dev-ed.develop.my.site.com');
+            document.getElementById("start-chat-button").disabled = false; // Enable button after initialization
         }
 
         // Initialize Embedded Service
@@ -32,6 +30,10 @@
 
         // Start Chat Function
         function startChat() {
+            if (!embeddedSvcLoaded) {
+                console.error('Embedded Service is not yet loaded.');
+                return;
+            }
             console.log('Inside Start Chat');
             embedded_svc.liveAgentAPI.startChat({
                 directToAgentRouting: {
@@ -43,22 +45,11 @@
             });
         }
 
-        // Async function to initialize Embedded Service
-        async function initializeEmbeddedService() {
-            try {
-                await loadScript('https://orgfarm-5b184b8ce8-dev-ed.develop.my.site.com/ESWESAWebDeployment1724800920657/assets/js/bootstrap.min.js');
-                initESW('https://orgfarm-5b184b8ce8-dev-ed.develop.my.site.com');
-                console.log('Embedded Service loaded successfully.');
-
-                // Add click event listener after initialization
-                document.getElementById("start-chat-button").addEventListener("click", startChat);
-            } catch (error) {
-                console.error('Failed to load Embedded Service:', error);
-            }
-        }
-
-        // Start initialization
-        initializeEmbeddedService();
+        // Add click event listener after the script is loaded
+        document.getElementById("start-chat-button").addEventListener("click", startChat);
     </script>
+
+    <!-- Load the Embedded Service script and call the callback function -->
+    <script type='text/javascript' src='https://orgfarm-5b184b8ce8-dev-ed.develop.my.site.com/ESWESAWebDeployment1724800920657/assets/js/bootstrap.min.js' onload='onEmbeddedSvcLoaded()'></script>
 </body>
 </html>
