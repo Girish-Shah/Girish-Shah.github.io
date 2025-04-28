@@ -10,6 +10,8 @@
         function initEmbeddedMessaging() {
             try {
                 embeddedservice_bootstrap.settings.language = 'en_US'; // Set language
+                embeddedservice_bootstrap.settings.targetElement = document.getElementById("chat-container"); // Target element
+
                 embeddedservice_bootstrap.init(
                     '00DdL00000N7Glz', // Your org ID
                     'ESA_Web_Deployment', // Your deployment name
@@ -18,8 +20,6 @@
                         scrt2URL: 'https://orgfarm-5b184b8ce8-dev-ed.develop.my.salesforce-scrt.com' // SCRT URL
                     }
                 );
-                embeddedservice_bootstrap.settings.targetElement = document.getElementById("chat-container"); // Target element
-                embeddedservice_bootstrap.initMessaging(); // Initialize messaging
             } catch (err) {
                 console.error('Error loading Embedded Messaging: ', err);
             }
